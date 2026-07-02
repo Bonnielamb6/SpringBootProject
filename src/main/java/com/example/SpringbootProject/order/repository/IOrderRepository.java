@@ -1,0 +1,7 @@
+package com.example.SpringbootProject.order.repository;
+
+import com.example.SpringbootProject.order.model.Order;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface IOrderRepository extends JpaRepository<Order, Long> {
+}
