@@ -1,4 +1,4 @@
-package com.example.SpringbootProject.orderItems.model;
+package com.example.SpringbootProject.orderItem.model;
 
 import com.example.SpringbootProject.common.model.BaseEntity;
 import com.example.SpringbootProject.order.model.Order;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Entity
 @Table(name = "ORDER_ITEMS")
-public class OrderItems extends BaseEntity {
+public class OrderItem extends BaseEntity {
     @Column(nullable = false)
     @NotNull
     private Integer quantity;
