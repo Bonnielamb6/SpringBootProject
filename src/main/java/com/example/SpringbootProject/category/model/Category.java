@@ -7,7 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +18,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@AllArgsConstructor
 @Table(name = "CATEGORIES")
 public class Category extends BaseEntity {
     @Column(nullable = false)
@@ -37,5 +35,10 @@ public class Category extends BaseEntity {
 
     public void removeProduct(Product product) {
         product.removeCategory(this);
+    }
+
+    public Category(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 }
