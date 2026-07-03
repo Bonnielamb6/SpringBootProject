@@ -1,4 +1,4 @@
-package com.example.SpringbootProject.orderItems.dto.response;
+package com.example.SpringbootProject.orderItem.dto.response;
 
 import java.math.BigDecimal;
 

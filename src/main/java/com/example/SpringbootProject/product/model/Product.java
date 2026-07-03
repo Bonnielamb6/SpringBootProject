@@ -4,15 +4,17 @@ import com.example.SpringbootProject.category.model.Category;
 import com.example.SpringbootProject.common.model.BaseEntity;
 import com.example.SpringbootProject.exceptions.CategoryAlreadyAssignedException;
 import com.example.SpringbootProject.exceptions.CategoryNotAssignedException;
-import com.example.SpringbootProject.orderItems.model.OrderItems;
+import com.example.SpringbootProject.orderItem.model.OrderItem;
 import com.example.SpringbootProject.productImages.model.ProductImages;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,7 +23,6 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "PRODUCTS")
 public class Product extends BaseEntity {
@@ -39,10 +40,15 @@ public class Product extends BaseEntity {
     )
     private Set<Category> categories = new HashSet<>();
     @OneToMany(mappedBy = "product")
-    private List<OrderItems> ordersItems = new ArrayList<>();
+    private List<OrderItem> orderLines = new ArrayList<>();
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImages> images = new ArrayList<>();
+    @Column(name = "unit_price", nullable = false)
+    @NotNull
+    private BigDecimal unitPrice;
+    private Integer stock;
 
+    @Column(nullable = false)
     public void addCategory(Category category) {
         if (this.categories.contains(category)) {
             throw new CategoryAlreadyAssignedException(this.getId(), category.getId());
@@ -57,5 +63,11 @@ public class Product extends BaseEntity {
         }
         this.categories.remove(category);
         category.getProducts().remove(this);
+    }
+
+    public Product(String name, String description, Integer stock) {
+        this.name = name;
+        this.description = description;
+        this.stock = stock;
     }
 }

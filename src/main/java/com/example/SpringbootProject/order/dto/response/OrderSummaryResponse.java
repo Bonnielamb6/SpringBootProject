@@ -7,9 +7,10 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
-public record OrderCreateResponse(
+public record OrderSummaryResponse(
         Long id,
         BigDecimal total,
-        OrderStatus status
+        OrderStatus status,
+        Instant createdAt
 ) {
 }

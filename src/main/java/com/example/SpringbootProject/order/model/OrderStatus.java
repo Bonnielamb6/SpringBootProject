@@ -1,4 +1,4 @@
-package com.example.SpringbootProject.order.enums;
+package com.example.SpringbootProject.order.model;
 
 public enum OrderStatus {
     PENDING,
@@ -6,5 +6,12 @@ public enum OrderStatus {
     PROCESSING,
     SHIPPED,
     DELIVERED,
-    CANCELLED
+    CANCELLED;
+
+    public boolean canBeCancelled(){
+        return switch(this){
+            case PENDING, PAID, PROCESSING -> true;
+            case SHIPPED, DELIVERED, CANCELLED -> false;
+        };
+    }
 }

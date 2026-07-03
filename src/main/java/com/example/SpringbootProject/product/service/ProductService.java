@@ -27,9 +27,7 @@ public class ProductService {
         Product product = new Product(
                 productToAdd.name(),
                 productToAdd.description(),
-                null,
-                null,
-                null
+                productToAdd.stock()
         );
         Product productCreated = productRepository.save(product);
         return new ProductCreateResponse(
@@ -77,10 +75,10 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public void removeCategory(Long productId, Long category_id){
+    public void removeCategory(Long productId, Long category_id) {
         Category category = categoryRepository.findById(category_id).orElseThrow(() -> new NoSuchCategoryException(category_id));
         Product product = productRepository.findById(productId).orElseThrow(() -> new NoSuchProductException(productId));
-        if(!product.getCategories().contains(category)){
+        if (!product.getCategories().contains(category)) {
             throw new CategoryNotAssignedException(productId, category_id);
         }
         product.removeCategory(category);

@@ -20,9 +20,9 @@ public class OrderItem extends BaseEntity {
     @Column(nullable = false)
     @NotNull
     private Integer quantity;
-    @Column(nullable = false)
+    @Column(name = "unit_price", nullable = false)
     @NotNull
-    private BigDecimal unit_price;
+    private BigDecimal unitPrice;
     @Column(nullable = false)
     @NotNull
     private BigDecimal subtotal;
@@ -34,4 +34,12 @@ public class OrderItem extends BaseEntity {
     @JoinColumn(name = "order_id", nullable = false)
     @NotNull
     private Order order;
+
+    public OrderItem(Order order, Product product, Integer quantity, BigDecimal unitPrice) {
+        this.order = order;
+        this.product = product;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+        this.subtotal = unitPrice.multiply(BigDecimal.valueOf(quantity));
+    }
 }
