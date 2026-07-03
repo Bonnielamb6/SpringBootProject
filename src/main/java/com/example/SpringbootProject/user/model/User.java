@@ -17,7 +17,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@AllArgsConstructor
 @Table(name = "USERS")
 public class User extends BaseEntity {
     @Column(nullable = false)
@@ -47,5 +46,11 @@ public class User extends BaseEntity {
     public void removeRole(Role role) {
         roles.remove(role);
         role.getUsers().remove(this);
+    }
+
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
     }
 }

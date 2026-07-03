@@ -1,6 +1,6 @@
 package com.example.SpringbootProject.user.dto.response;
 
-public record UserResponse(
+public record UserCreateResponse(
         Long id,
         String name,
         String email

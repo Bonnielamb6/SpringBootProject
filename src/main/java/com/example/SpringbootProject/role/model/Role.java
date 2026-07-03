@@ -19,7 +19,6 @@ import java.util.Set;
 @Setter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "ROLES")
 public class Role extends BaseEntity {
     @Column(nullable = false)
@@ -30,5 +29,10 @@ public class Role extends BaseEntity {
     private String description;
     @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
+
+    public Role(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }
 
