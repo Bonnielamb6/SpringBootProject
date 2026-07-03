@@ -6,10 +6,13 @@ import com.example.SpringbootProject.exceptions.CategoryNotAssignedException;
 import com.example.SpringbootProject.exceptions.NoSuchCategoryException;
 import com.example.SpringbootProject.exceptions.NoSuchProductException;
 import com.example.SpringbootProject.product.dto.request.ProductCreateRequest;
+import com.example.SpringbootProject.product.dto.request.ProductUpdateRequest;
 import com.example.SpringbootProject.product.dto.response.ProductCreateResponse;
-import com.example.SpringbootProject.product.dto.response.ProductResponse;
+import com.example.SpringbootProject.product.dto.response.ProductDetailResponse;
+import com.example.SpringbootProject.product.mapper.ProductMapper;
 import com.example.SpringbootProject.product.model.Product;
 import com.example.SpringbootProject.product.repository.IProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,12 +20,15 @@ public class ProductService {
 
     private final IProductRepository productRepository;
     private final ICategoryRepository categoryRepository;
+    private final ProductMapper productMapper;
 
-    public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository) {
+    public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.productMapper = productMapper;
     }
 
+    @Transactional
     public ProductCreateResponse saveProduct(ProductCreateRequest productToAdd) {
         Product product = new Product(
                 productToAdd.name(),
@@ -30,44 +36,31 @@ public class ProductService {
                 productToAdd.stock()
         );
         Product productCreated = productRepository.save(product);
-        return new ProductCreateResponse(
-                productCreated.getId(),
-                productCreated.getName(),
-                productCreated.getDescription()
-        );
+        return productMapper.toCreateResponse(productCreated);
     }
 
+    @Transactional
     public void deleteProduct(Long id) {
-        if (productRepository.existsById(id)) {
-            productRepository.deleteById(id);
-        } else {
-            throw new NoSuchProductException(id);
-        }
-    }
-
-    public ProductResponse getProduct(Long id) {
-        Product productToReturn = productRepository.findById(id).orElseThrow(() -> new NoSuchProductException(id));
-        return new ProductResponse(
-                productToReturn.getId(),
-                productToReturn.getName(),
-                productToReturn.getDescription(),
-                productToReturn.getCategories(),
-                productToReturn.getImages()
-        );
-    }
-
-    public ProductCreateResponse updateProduct(Long id, ProductCreateRequest productUpdate) {
         Product product = productRepository.findById(id).orElseThrow(() -> new NoSuchProductException(id));
-        product.setName(productUpdate.name());
-        product.setDescription(productUpdate.description());
-        productRepository.save(product);
-        return new ProductCreateResponse(
-                product.getId(),
-                product.getName(),
-                product.getDescription()
-        );
+        productRepository.delete(product);
     }
 
+    public ProductDetailResponse getProduct(Long id) {
+        Product productToReturn = productRepository.findById(id).orElseThrow(() -> new NoSuchProductException(id));
+        return productMapper.toDetailResponse(productToReturn);
+    }
+
+    @Transactional
+    public ProductDetailResponse updateProduct(Long id, ProductUpdateRequest request) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new NoSuchProductException(id));
+        product.setName(request.name());
+        product.setDescription(request.description());
+        product.setUnitPrice(request.unitPrice());
+        product.setStock(request.stock());
+        return productMapper.toDetailResponse(product);
+    }
+
+    @Transactional
     public void addCategory(Long productId, Long category_id) {
         Category category = categoryRepository.findById(category_id).orElseThrow(() -> new NoSuchCategoryException(category_id));
         Product product = productRepository.findById(productId).orElseThrow(() -> new NoSuchProductException(productId));
@@ -75,6 +68,7 @@ public class ProductService {
         productRepository.save(product);
     }
 
+    @Transactional
     public void removeCategory(Long productId, Long category_id) {
         Category category = categoryRepository.findById(category_id).orElseThrow(() -> new NoSuchCategoryException(category_id));
         Product product = productRepository.findById(productId).orElseThrow(() -> new NoSuchProductException(productId));
