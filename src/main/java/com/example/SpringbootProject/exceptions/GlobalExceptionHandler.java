@@ -32,6 +32,96 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
+    @ExceptionHandler(CategoryAlreadyAssignedException.class)
+    public ResponseEntity<RestErrorResponse> handleCategoryAlreadyAssigned(CategoryAlreadyAssignedException ex) {
+        RestErrorResponse errorResponse = RestErrorResponse.builder()
+                .status(HttpStatus.CONFLICT.value())
+                .message(ex.getMessage())
+                .timestamp(Instant.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+
+    @ExceptionHandler(InsufficientStockException.class)
+    public ResponseEntity<RestErrorResponse> handleInsufficientStock(InsufficientStockException ex) {
+        RestErrorResponse errorResponse = RestErrorResponse.builder()
+                .status(HttpStatus.CONFLICT.value())
+                .message(ex.getMessage())
+                .timestamp(Instant.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+
+    @ExceptionHandler(InvalidOrderStatusException.class)
+    public ResponseEntity<RestErrorResponse> handleInvalidOrderStatus(InvalidOrderStatusException ex) {
+        RestErrorResponse errorResponse = RestErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message(ex.getMessage())
+                .timestamp(Instant.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(NoSuchCategoryException.class)
+    public ResponseEntity<RestErrorResponse> handleNoSuchCategory(NoSuchCategoryException ex) {
+        RestErrorResponse errorResponse = RestErrorResponse.builder()
+                .status(HttpStatus.NOT_FOUND.value())
+                .message(ex.getMessage())
+                .timestamp(Instant.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler(NoSuchOrderException.class)
+    public ResponseEntity<RestErrorResponse> handleNoSuchOrder(NoSuchOrderException ex) {
+        RestErrorResponse errorResponse = RestErrorResponse.builder()
+                .status(HttpStatus.NOT_FOUND.value())
+                .message(ex.getMessage())
+                .timestamp(Instant.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler(NoSuchProductException.class)
+    public ResponseEntity<RestErrorResponse> handleNoSuchProduct(NoSuchProductException ex) {
+        RestErrorResponse errorResponse = RestErrorResponse.builder()
+                .status(HttpStatus.NOT_FOUND.value())
+                .message(ex.getMessage())
+                .timestamp(Instant.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler(NoSuchRoleException.class)
+    public ResponseEntity<RestErrorResponse> handleNoSuchRole(NoSuchRoleException ex) {
+        RestErrorResponse errorResponse = RestErrorResponse.builder()
+                .status(HttpStatus.NOT_FOUND.value())
+                .message(ex.getMessage())
+                .timestamp(Instant.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler(RoleAlreadyAssignedException.class)
+    public ResponseEntity<RestErrorResponse> handleRoleAlreadyAssigned(RoleAlreadyAssignedException ex) {
+        RestErrorResponse errorResponse = RestErrorResponse.builder()
+                .status(HttpStatus.CONFLICT.value())
+                .message(ex.getMessage())
+                .timestamp(Instant.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+
+    @ExceptionHandler(RoleNotAssignedException.class)
+    public ResponseEntity<RestErrorResponse> handleRoleNotAssigned(RoleNotAssignedException ex) {
+        RestErrorResponse errorResponse = RestErrorResponse.builder()
+                .status(HttpStatus.CONFLICT.value())
+                .message(ex.getMessage())
+                .timestamp(Instant.now())
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+
     @ExceptionHandler(Exception.class)
     ResponseEntity<RestErrorResponse> handleException(Exception ex) {
         RestErrorResponse error = RestErrorResponse.builder().
