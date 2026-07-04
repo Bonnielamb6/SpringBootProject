@@ -4,11 +4,14 @@ import com.example.SpringbootProject.category.dto.request.CategoryCreateRequest;
 import com.example.SpringbootProject.category.dto.request.CategoryUpdateRequest;
 import com.example.SpringbootProject.category.dto.response.CategoryDetailResponse;
 import com.example.SpringbootProject.category.dto.response.CategoryResponse;
+import com.example.SpringbootProject.category.dto.response.CategorySummary;
 import com.example.SpringbootProject.category.mapper.CategoryMapper;
 import com.example.SpringbootProject.category.model.Category;
 import com.example.SpringbootProject.category.repository.ICategoryRepository;
 import com.example.SpringbootProject.exceptions.NoSuchCategoryException;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +24,7 @@ public class CategoryService {
         this.categoryMapper = categoryMapper;
     }
 
-    public CategoryResponse saveCategory(CategoryCreateRequest request) {
+    public CategoryResponse createCategory(CategoryCreateRequest request) {
         Category category = new Category(
                 request.name(),
                 request.description()
@@ -33,6 +36,10 @@ public class CategoryService {
     public CategoryDetailResponse getCategory(Long id) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new NoSuchCategoryException(id));
         return categoryMapper.toDetailResponse(category);
+    }
+
+    public Page<CategorySummary> getCategories(Pageable pageable) {
+        return categoryRepository.findAll(pageable).map(categoryMapper::toSummaryResponse);
     }
 
     @Transactional

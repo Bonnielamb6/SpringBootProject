@@ -37,7 +37,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderCreateResponse saveOrder(OrderCreateRequest orderRequest) {
+    public OrderCreateResponse createOrder(OrderCreateRequest orderRequest) {
         User user = userRepository.findById(orderRequest.userId()).orElseThrow(() -> new NoSuchUserException(orderRequest.userId()));
         Order orderCreated = new Order(user);
         BigDecimal total = BigDecimal.ZERO;
@@ -62,7 +62,7 @@ public class OrderService {
         return orderMapper.toCreateResponse(orderCreated);
     }
 
-    public OrderDetailResponse getOrderById(Long id) {
+    public OrderDetailResponse getOrder(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new NoSuchOrderException(id));
 
         return orderMapper.toDetailResponse(order);
@@ -93,7 +93,7 @@ public class OrderService {
         return orderMapper.toDetailResponse(order);
     }
 
-    public Page<OrderSummaryResponse> getAllOrders(Pageable pageable) {
+    public Page<OrderSummaryResponse> getOrders(Pageable pageable) {
         return orderRepository
                 .findAll(pageable)
                 .map(orderMapper::toSummaryResponse);

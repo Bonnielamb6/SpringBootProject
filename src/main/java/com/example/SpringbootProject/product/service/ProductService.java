@@ -9,10 +9,13 @@ import com.example.SpringbootProject.product.dto.request.ProductCreateRequest;
 import com.example.SpringbootProject.product.dto.request.ProductUpdateRequest;
 import com.example.SpringbootProject.product.dto.response.ProductCreateResponse;
 import com.example.SpringbootProject.product.dto.response.ProductDetailResponse;
+import com.example.SpringbootProject.product.dto.response.ProductResponse;
 import com.example.SpringbootProject.product.mapper.ProductMapper;
 import com.example.SpringbootProject.product.model.Product;
 import com.example.SpringbootProject.product.repository.IProductRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,7 +32,7 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductCreateResponse saveProduct(ProductCreateRequest productToAdd) {
+    public ProductCreateResponse createProduct(ProductCreateRequest productToAdd) {
         Product product = new Product(
                 productToAdd.name(),
                 productToAdd.description(),
@@ -48,6 +51,10 @@ public class ProductService {
     public ProductDetailResponse getProduct(Long id) {
         Product productToReturn = productRepository.findById(id).orElseThrow(() -> new NoSuchProductException(id));
         return productMapper.toDetailResponse(productToReturn);
+    }
+
+    public Page<ProductResponse> getProducts(Pageable pageable) {
+        return productRepository.findAll(pageable).map(productMapper::toResponse);
     }
 
     @Transactional

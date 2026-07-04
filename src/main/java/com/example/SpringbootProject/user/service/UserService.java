@@ -33,7 +33,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserCreateResponse saveUser(UserCreateRequest request) {
+    public UserCreateResponse createUser(UserCreateRequest request) {
         User user = new User(
                 request.name(),
                 request.email(),
@@ -43,7 +43,7 @@ public class UserService {
         return userMapper.toCreateResponse(userCreated);
     }
 
-    public UserDetailResponse getUserById(Long id) {
+    public UserDetailResponse getUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new NoSuchUserException(id));
         return userMapper.toDetailResponse(user);
     }
@@ -85,7 +85,7 @@ public class UserService {
         return userMapper.toDetailResponse(user);
     }
 
-    public Page<UserSummary> getAllUsers(Pageable pageable) {
+    public Page<UserSummary> getUsers(Pageable pageable) {
         return userRepository
                 .findAll(pageable)
                 .map(userMapper::toSummary);

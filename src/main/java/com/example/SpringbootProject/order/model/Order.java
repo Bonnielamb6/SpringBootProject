@@ -6,7 +6,6 @@ import com.example.SpringbootProject.payment.model.Payment;
 import com.example.SpringbootProject.shipment.model.Shipment;
 import com.example.SpringbootProject.user.model.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

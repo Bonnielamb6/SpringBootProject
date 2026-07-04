@@ -5,7 +5,6 @@ import com.example.SpringbootProject.order.model.Order;
 import com.example.SpringbootProject.role.model.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

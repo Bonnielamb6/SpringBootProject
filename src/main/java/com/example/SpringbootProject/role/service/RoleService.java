@@ -2,6 +2,7 @@ package com.example.SpringbootProject.role.service;
 
 import com.example.SpringbootProject.exceptions.NoSuchRoleException;
 import com.example.SpringbootProject.role.dto.request.RoleCreateRequest;
+import com.example.SpringbootProject.role.dto.request.RoleUpdateRequest;
 import com.example.SpringbootProject.role.dto.response.RoleResponse;
 import com.example.SpringbootProject.role.dto.response.RoleSummary;
 import com.example.SpringbootProject.role.mapper.RoleMapper;
@@ -23,7 +24,7 @@ public class RoleService {
     }
 
     @Transactional
-    public RoleResponse saveRole(RoleCreateRequest roleToAdd) {
+    public RoleResponse createRole(RoleCreateRequest roleToAdd) {
         Role role = new Role(
                 roleToAdd.name(),
                 roleToAdd.description()
@@ -38,20 +39,20 @@ public class RoleService {
         roleRepository.delete(role);
     }
 
-    public RoleResponse getRoleById(Long id) {
+    public RoleResponse getRole(Long id) {
         Role role = roleRepository.findById(id).orElseThrow(() -> new NoSuchRoleException(id));
         return roleMapper.toResponse(role);
     }
 
     @Transactional
-    public RoleResponse updateRole(Long id, RoleCreateRequest roleUpdate) {
+    public RoleResponse updateRole(Long id, RoleUpdateRequest roleUpdate) {
         Role role = roleRepository.findById(id).orElseThrow(() -> new NoSuchRoleException(id));
         role.setName(roleUpdate.name());
         role.setDescription(roleUpdate.description());
         return roleMapper.toResponse(role);
     }
 
-    public Page<RoleSummary> getAllRoles(Pageable pageable) {
+    public Page<RoleSummary> getRoles(Pageable pageable) {
         return roleRepository
                 .findAll(pageable)
                 .map(roleMapper::toSummaryResponse);
