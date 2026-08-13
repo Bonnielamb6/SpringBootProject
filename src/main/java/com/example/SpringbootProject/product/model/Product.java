@@ -69,4 +69,14 @@ public class Product extends BaseEntity {
         this.description = description;
         this.stock = stock;
     }
+
+    public void addImage(ProductImages image){
+        this.images.add(image);
+        image.setProduct(this);
+    }
+
+    public void removeImage(ProductImages image){
+        this.images.remove(image);
+        image.setProduct(null);
+    }
 }

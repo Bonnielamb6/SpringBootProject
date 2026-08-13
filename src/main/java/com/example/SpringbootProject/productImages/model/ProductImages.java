@@ -17,6 +17,8 @@ import lombok.Setter;
 public class ProductImages extends BaseEntity {
     @NotBlank
     private String imageUrl;
+    @NotBlank
+    private String publicId;
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
